@@ -14,10 +14,11 @@ assign run_cnt = (cnt!=0)?1'b1: 1'b0;	// Check if cnt is zero
 always@(posedge clk) begin
 	if(run_cnt)begin
 		// Insert your code here
-		
+		cnt = cnt - 1'b1;
 	end
 	else if (ena) begin
 		// Insert your code here
+		cnt = din;
 	end
 end
 
@@ -27,9 +28,11 @@ end
 always@(posedge clk) begin
 	if(cnt == 1) begin	
 		// Insert your code here
+		oflag = 1'b1;
 	end
 	else begin	
 		// Insert your code here
+		oflag = 1'b0;
 	end
 end
 
