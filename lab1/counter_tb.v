@@ -10,10 +10,10 @@ wire oflag;
 
 // Counter design under test
 counter 
-u_counter(.PORTNAME(clk), 
-		.PORTNAME(din), 
-		.PORTNAME(ena), 
-		.PORTNAME(oflag));
+u_counter(.clk(clk), 
+		.din(din), 
+		.ena(ena), 
+		.oflag(oflag));
 
 // Clock
 initial begin
