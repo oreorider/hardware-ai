@@ -1,6 +1,7 @@
 `include "riscv_defines.v"
+
 //-------------------------------------------------------------------------------------------------------
-//**** module description begins with “module modulename”
+//**** module description begins with ?쐌odule modulename??
 //    : this file descripts the function of module
 //-------------------------------------------------------------------------------------------------------
 
@@ -61,7 +62,7 @@ module riscv_multiplier(
 	  end else begin
 		if (mul_busy_r) begin							    //*** states repeat LSB check - add - shift in sequence during multiplication
 		  //Insert your code
-		  //mul_count_r <= /*Insert your code */			//*** counter check for state-end
+		  mul_count_r <= mul_count_r - 1'b1;		//*** counter check for state-end
 		  mul_res_r   <= { mul_sum_w, mul_res_r[31:1] };    //*** 64bit width register composed by previous adder result and multiplier b 
 															//*** uppper with adder result (or initial multiplicand a), lower with multiplier b
 															//*** 1bit shift right per state change
@@ -69,7 +70,7 @@ module riscv_multiplier(
 		  if (mul_count_r == 5'd0) begin
 			mul_busy_r  <= 1'b0;
 			// Insert your code
-			// mul_ready_r <= /*Insert your code */
+			mul_ready_r <= 1'b1;/*Insert your code */
 		  end
 
 		end else if (mul_ready_r) begin        		//*** activating ready signal for 1 clock
@@ -79,7 +80,7 @@ module riscv_multiplier(
 		  mul_count_r <= 5'd31;				   		//*** when multiplication requested, set control signals for state
 		  mul_busy_r  <= 1'b1;				   		//*** counter value, busy and 64bits internal register
 		  // Insert your code
-		  //mul_res_r   <= /*Insert your code */   	//*** intial value with upper 32bits zero and lower 32bit multiplicand a
+		  mul_res_r   <= {32'b0, id_ra_value_r};/*Insert your code */   	//*** intial value with upper 32bits zero and lower 32bit multiplicand a
 		end
 	  end
 	end
@@ -88,7 +89,7 @@ module riscv_multiplier(
 	assign ex_stall_mul_w = mul_request_w && !mul_ready_r;
 
 //-------------------------------------------------------------------------------------------------------
-//**** module description ends with “endmodule”
+//**** module description ends with ?쐃ndmodule??
 //-------------------------------------------------------------------------------------------------------
 endmodule
 
