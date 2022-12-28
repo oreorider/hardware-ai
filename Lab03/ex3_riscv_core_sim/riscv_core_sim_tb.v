@@ -6,7 +6,7 @@ module riscv_core_sim_tb ();
 	reg reset_i;
 	reg clk_i;
 
-	// Input instruction
+	// Input memory
 	reg  [31:0] iaddr_i;
 	reg  	       ird_i;
 	reg [31:0] daddr_i;
@@ -57,13 +57,44 @@ module riscv_core_sim_tb ();
 	riscv_memory 
 	u_memory (
 		.clk_i(clk_i),
-		.reset_i(reset_i)
+		.reset_i(reset_i),
+		.iaddr_i(iaddr_i),
+		.irdata_o(irdata_o),
+		.ird_i(ird_i),
+		.daddr_i(daddr_i),
+		.dwdata_i(dwdata_i),
+		.drdata_o(drdata_o),
+		.dsize_i(dsize_i),
+		.drd_i(drd_i),
+		.dwr_i(dwr_i)
 	);
 
 	// Decoder
 	riscv_decoder
 	u_decoder
 	(
+		.if_opcode_w(irdata_o),
+		.id_imm_w(id_imm_w),
+		.id_rd_index_w(id_rd_index_w),
+		.id_ra_index_w(id_ra_index_w),
+		.id_rb_index_w(id_rb_index_w),
+		.id_alu_op_w(id_alu_op_w),
+		.id_branch_w(id_branch_w),
+		.id_mem_size_w(id_mem_size_w),
+		.mulh_w(mulh_w),
+		.mulhsu_w(mulhsu_w),
+		.div_w(div_w),
+		.rem_w(rem_w),
+		.sra_w(sra_w),
+		.srai_w(srai_w),
+		.alu_imm_w(alu_imm_w),
+		.jal_w(jal_w),
+		.load_w(load_w),
+		.store_w(store_w),
+		.lbu_w(lbu_w),
+		.lhu_w(lhu_w),
+		.jalr_w(jalr_w),
+		.id_illegal_w(id_illegal_w)
 	);
 	//}}}
 
