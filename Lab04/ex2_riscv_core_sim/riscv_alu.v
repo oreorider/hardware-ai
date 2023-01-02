@@ -1,10 +1,41 @@
 //-------------------------------------------------------------------------------------------------------
-//**** module description begins with “module modulename”
+//**** module description begins with ?쐌odule modulename??
 //    : this file descripts the function of module
 //-------------------------------------------------------------------------------------------------------
 
-`include"riscv_defines.v"
+//`include"riscv_defines.v"
 
+
+`define ALU_ADD   4'd0		// Addition
+`define ALU_SUB   4'd1		// Subtraction
+`define ALU_AND   4'd2		// AND	
+`define ALU_OR    4'd3		// OR	
+`define ALU_XOR   4'd4		// XOR
+`define ALU_SLT   4'd5		// Compare, Signed
+`define ALU_SLTU  4'd6		// Compare, Unsigned
+`define ALU_SLL   4'd7		// Shift Left Logical
+`define ALU_SRL   4'd8		// Shift Right Logical
+`define ALU_SRA   4'd9		// Shift Right Arithmetic
+`define ALU_MULL  4'd10		// Multiplier Upper Half
+`define ALU_MULH  4'd11		// Multiplier Upper Half
+`define ALU_DIV   4'd12		// Divider, division
+`define ALU_REM   4'd13		// Divider, quotient
+`define ALU_AUIPC 4'd14		// Add Upper Imm to PC
+`define ALU_IDLE  4'd15
+
+
+`define  BR_NONE   3'd0
+`define  BR_JUMP   3'd1
+`define  BR_EQ     3'd2
+`define  BR_NE     3'd3
+`define  BR_LT     3'd4
+`define  BR_GE     3'd5
+`define  BR_LTU    3'd6
+`define  BR_GEU    3'd7
+
+`define  SIZE_BYTE 2'd0
+`define  SIZE_HALF 2'd1
+`define  SIZE_WORD 2'd2
 module riscv_alu
 (
 //-------------------------------------------------------------------------------------------------------
@@ -50,7 +81,6 @@ begin
 	// Insert your code here
 	//{{{
 	
-		
 	//}}}
 end
 //-----------------------------------------------------------------
@@ -87,15 +117,15 @@ begin
 
 			// Insert your code here
 			//{{{			
-            //if (alu_b_i[2] == 1'b1)										//*** shift left 4(x8) to 7(x128) 
-            //    shift_left_4_r = /*Insert your code */					//    :(alu_b_i[2:0]== 3'b100 to 3'b111)
-            //else
-            //    shift_left_4_r = /*Insert your code */
+            if (alu_b_i[2] == 1'b1)										//*** shift left 4(x8) to 7(x128) 
+                shift_left_4_r = {shift_left_2_r[27:0], 4'b0000};					//    :(alu_b_i[2:0]== 3'b100 to 3'b111)
+            else
+                shift_left_4_r = shift_left_2_r;
 
-            //if (alu_b_i[3] == 1'b1)
-            //    shift_left_8_r = /*Insert your code */					//*** shift left 8 to 15
-            //else														//    :(alu_b_i[3:0]== 4'b1000 to 4'b1111 )
-            //    shift_left_8_r = /*Insert your code */
+            if (alu_b_i[3] == 1'b1)
+                shift_left_8_r = {shift_left_4_r[23:0], 8'b00000000};		//*** shift left 8 to 15
+            else														//    :(alu_b_i[3:0]== 4'b1000 to 4'b1111 )
+                shift_left_8_r = shift_left_4_r;
 			//}}}
             if (alu_b_i[4] == 1'b1)
                 result_r = {shift_left_8_r[15:0],16'b0000000000000000}; //*** shift left 16 to 31
@@ -115,15 +145,15 @@ begin
 			
 			// Insert your code here
 			//{{{
-            //if (alu_b_i[0] == 1'b1)
-            //    shift_right_1_r = /*Insert your code */
-            //else
-            //    shift_right_1_r = /*Insert your code */
+            if (alu_b_i[0] == 1'b1)
+                shift_right_1_r = {shift_right_fill_r[31], alu_a_i[31:1]};
+            else
+                shift_right_1_r = alu_a_i;
 
-            //if (alu_b_i[1] == 1'b1)
-            //    shift_right_2_r = /*Insert your code */
-            //else
-            //    shift_right_2_r = /*Insert your code */
+            if (alu_b_i[1] == 1'b1)
+                shift_right_2_r = {shift_right_fill_r[31:30], shift_right_1_r[31:2]};
+            else
+                shift_right_2_r = shift_right_1_r; 
 			//}}}
 			
             if (alu_b_i[2] == 1'b1)
@@ -161,11 +191,11 @@ begin
        end
        `ALU_OR  : 
        begin
-            //result_r      = /*Insert your code */
+            result_r      = alu_a_i | alu_b_i;
        end
        `ALU_XOR : 
        begin
-            //result_r      = /*Insert your code */
+            result_r      = alu_a_i ^ alu_b_i;
        end
        //----------------------------------------------
        // Comparision
@@ -178,10 +208,10 @@ begin
        begin
 			//Insert your code
 			//{{{
-            //if (alu_a_i[31] != alu_b_i[31])
-            //    result_r  = /*Insert your code */
-            //else
-            //    result_r  = sub_res_w[31] ? 32'h1 : 32'h0;            
+            if (alu_a_i[31] != alu_b_i[31])
+                result_r  = alu_a_i[31] ? 32'h1 : 32'h0;
+            else
+                result_r  = sub_res_w[31] ? 32'h1 : 32'h0;            
 			//}}}
        end       
        default  : 
@@ -198,6 +228,6 @@ end
 assign alu_p_o    = result_r;
 
 //-------------------------------------------------------------------------------------------------------
-//**** module description ends with “endmodule”
+//**** module description ends with ?쐃ndmodule??
 //-------------------------------------------------------------------------------------------------------
 endmodule

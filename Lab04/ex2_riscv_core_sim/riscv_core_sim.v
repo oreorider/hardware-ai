@@ -92,17 +92,18 @@ assign if_opcode_w = irdata_i;
 //{{{
 /* TODO: ALU */
 always@(*) begin
-	alu_op = `ALU_ADD;
-	alu_a = 32'h0;
-	alu_b = 32'h0;
+	//alu_op = `ALU_ADD;
+	//alu_a = 32'h0;
+	//alu_b = 32'h0;
 	
 	// Insert your code
 	//{{
-	//alu_op = id_alu_op_w;
-	//alu_a  = ra_value_r;
-	//alu_b  = (alu_imm_w || jal_w || load_w || store_w) ? id_imm_w : rb_value_r;
+	alu_op = id_alu_op_w;
+	alu_a  = ra_value_r;
+	alu_b  = (alu_imm_w || jal_w || load_w || store_w) ? id_imm_w : rb_value_r;
 	//}}
 end
+
 /* TODO: Branch, Jump and Link instructions */
 always @ (*) begin
 	branch_taken_w = 1'b0;
@@ -116,13 +117,16 @@ always @ (*) begin
 		`BR_NE: begin	
 		// Insert your code
 		//{{{		
+			branch_taken_w = ($signed(ra_value_r)) != ($signed(rb_value_r)) ? 1'b1 : 1'b0;
+			jump_addr_w = if_pc_d + id_imm_w;
 		//}}}
 		end
 		`BR_LT: begin		
 		// Insert your code
 		//{{{		
 			// Dummy Branch
-			branch_taken_w = 1'b1;		
+			branch_taken_w = ($signed(ra_value_r)) < ($signed(rb_value_r)) ? 1'b1 : 1'b0;
+			jump_addr_w = if_pc_d + id_imm_w;
 		//}}}		
 		end
 		`BR_GE: begin
@@ -150,14 +154,14 @@ assign  dwr_o = 1'b0;
 
 // Dummy register file ports
 always@(*) begin
-	rd_index_w = 5'h0;
-	rd_value_w = 32'h0;
-	rd_we_w    = 1'b0;
+	//rd_index_w = 5'h0;
+	//rd_value_w = 32'h0;
+	//rd_we_w    = 1'b0;
 	// Insert your code
 	//{{{	
-	//rd_index_w = id_rd_index_w;
-	//rd_value_w = alu_p;
-	//rd_we_w    = 1'b1;	
+	rd_index_w = id_rd_index_w;
+	rd_value_w = alu_p;
+	rd_we_w    = 1'b1;	
 	//}}}	
 end
 //-----------------------------------------------------------------

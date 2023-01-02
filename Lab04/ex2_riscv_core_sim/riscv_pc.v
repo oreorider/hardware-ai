@@ -15,20 +15,21 @@ parameter   PC_SIZE  = 32)
 );
 
 reg [PC_SIZE-1:0] if_addr_r;
+
 always @(posedge clk_i or negedge reset_i) begin
   if (~reset_i) begin
 	//Your code
-    //if_addr_r <= /*insert your code*/;
+    if_addr_r <= 32'b0;
   end
   else begin 
 	if (ird) begin
 		// Your code
 		//{{{
 		if(branch_taken_w) begin
-			//if_addr_r <= /*insert your code*/;
+			if_addr_r <= jump_addr_w;
 		end
 		else begin
-			//if_addr_r <= /*insert your code*/;
+			if_addr_r <= if_next_addr_w + 4;
 		end
 		//}}}
 	end

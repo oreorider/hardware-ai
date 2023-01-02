@@ -4,7 +4,7 @@
 //-------------------------------------------------------------------------------------------------------
 module riscv_memory #(
   parameter     SIZE     = 8192,
-  parameter     FIRMWARE = "mem.hex"
+  parameter     FIRMWARE = "mem.mem"
 )
 (
 //-------------------------------------------------------------------------------------------------------
@@ -131,8 +131,8 @@ always @(posedge clk_i) begin
 	irdata_r <= 32'h0;
   else begin 
 	// Insert your code
-	//if (ird_i)
-	//	irdata_r <= /*Insert your code */ 
+	if (ird_i)
+	   irdata_r <= mem_r[iaddr_i[DEPTH:2]];
   end
 end
 // Output ports for Instruction
@@ -148,7 +148,9 @@ always @(posedge clk_i) begin
   if (~reset_i)
     	drdata_r <= 32'h0;
   else begin 
-	// Insert your code
+    if(drd_i)
+        drdata_r = mem_r[daddr_i[DEPTH:2]];
+            
   end    
 end
 
@@ -164,11 +166,11 @@ always @(posedge clk_i) begin
 							
   // Insert your code
   //{{{
-  //if (dbe_w[2] && dwr_i) 				//    For HALFWORD mode, select 1 of 2 slots among 32bits
-  //  /*Insert your code */  <= dwdata_w[23:16];  	//    4'b0011 	     	 : 4'b1100 
+  if (dbe_w[2] && dwr_i) 				//    For HALFWORD mode, select 1 of 2 slots among 32bits
+    mem_r[daddr_i[DEPTH:2]][23:16]  <= dwdata_w[23:16];  	//    4'b0011 	     	 : 4'b1100 
 							//    lower 16 bits overwrite  higher 16 bits overwrite
-  //if (dbe_w[3] && dwr_i)				//    For WORD mode
-  //  /*Insert your code */  <= dwdata_w[31:24];  	//    full 32bits overwrite 
+  if (dbe_w[3] && dwr_i)				//    For WORD mode
+    mem_r[daddr_i[DEPTH:2]][31:24]  <= dwdata_w[31:24];  	//    full 32bits overwrite 
   //}}}
 end
 

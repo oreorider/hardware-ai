@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------------
-//**** module description begins with ¡°module modulename¡±
+//**** module description begins with â€œmodule modulenameâ€
 //    : this file descripts the function of module
 //-------------------------------------------------------------------------------------------------------
 module riscv_regfile(	 
@@ -11,8 +11,7 @@ module riscv_regfile(
 //     : output monitored by testbench for funtional verification.
 //     : clock, reset for synchronous function
 //-------------------------------------------------------------------------------------------------------
-	input  clk_i
-    ,input rstn_i
+	input  clk_i ,input rstn_i
 
 //-------------------------------------------------------------------------------------------------------
 // **** register file read operation 
@@ -32,7 +31,7 @@ module riscv_regfile(
 //-------------------------------------------------------------------------------------------------------
 //**** internally used registers (called register files) definition
 //    : register file consists of 32 x 32bits register
-//    : one register is hard-wired zero, as integer ¡°0¡±, so totally 31 registers defined here.  
+//    : one register is hard-wired zero, as integer â€œ0â€, so totally 31 registers defined here.  
 //-------------------------------------------------------------------------------------------------------
     reg [31:0] reg_r1_q;
     reg [31:0] reg_r2_q;
@@ -139,12 +138,12 @@ module riscv_regfile(
 //-------------------------------------------------------------------------------------------------------
 // **** Flop based register File (for simulation)
 //     : Synchronous register write back
-//     : Description begins with ¡°always @( ¡±
+//     : Description begins with â€œalways @( â€
 //-------------------------------------------------------------------------------------------------------
 always @ (posedge clk_i or negedge rstn_i)
     
 //-------------------------------------------------------------------------------------------------------
-//**** reset value ¡°0¡± for initialization
+//**** reset value â€œ0â€ for initialization
 //    : all defined registers set to zero when negative enabled reset signal (1 ->0->1)  
 //-------------------------------------------------------------------------------------------------------
 	if (!rstn_i) begin
@@ -152,10 +151,10 @@ always @ (posedge clk_i or negedge rstn_i)
         reg_r2_q       <= 32'h00000000;
         reg_r3_q       <= 32'h00000000;
 		/*Insert your code */
-        //reg_r4_q      
-        //reg_r5_q       
-        //reg_r6_q       
-        //reg_r7_q       
+        reg_r4_q <= 32'h0;      
+        reg_r5_q <= 32'h0;
+        reg_r6_q <= 32'h0;      
+        reg_r7_q <= 32'h0;      
 		/*******************/
         reg_r8_q       <= 32'h00000000;
         reg_r9_q       <= 32'h00000000;
@@ -203,12 +202,12 @@ always @ (posedge clk_i or negedge rstn_i)
 			if      (rd0_i == 5'd12) reg_r12_q <= rd0_value_i;
 			if      (rd0_i == 5'd13) reg_r13_q <= rd0_value_i;
 			if      (rd0_i == 5'd14) reg_r14_q <= rd0_value_i;
-			if      (rd0_i == 5'd15) reg_r15_q <= rd0_value_i;
+			if      (rd0_i == 5'd15) reg_r15_q <= rd0_value_i; 
 			/*Insert your code */
-			//if      (rd0_i == 5'd16) 
-			//if      (rd0_i == 5'd17) 
-			//if      (rd0_i == 5'd18) 
-			//if      (rd0_i == 5'd19) 
+			if      (rd0_i == 5'd16) reg_r16_q <= rd0_value_i;
+			if      (rd0_i == 5'd17) reg_r17_q <= rd0_value_i;
+			if      (rd0_i == 5'd18) reg_r18_q <= rd0_value_i;
+			if      (rd0_i == 5'd19) reg_r19_q <= rd0_value_i;
 			/*******************/
 			if      (rd0_i == 5'd20) reg_r20_q <= rd0_value_i;
 			if      (rd0_i == 5'd21) reg_r21_q <= rd0_value_i;
@@ -247,10 +246,10 @@ always @ (posedge clk_i or negedge rstn_i)
         5'd8: ra0_value_r = reg_r8_q;
         5'd9: ra0_value_r = reg_r9_q;
 		/*Insert your code */
-        //5'd10: 
-        //5'd11:
-        //5'd12: 
-        //5'd13: 
+        5'd10: ra0_value_r = reg_r10_q; 
+        5'd11: ra0_value_r = reg_r11_q;
+        5'd12: ra0_value_r = reg_r12_q;
+        5'd13: ra0_value_r = reg_r13_q;
 		/*******************/
         5'd14: ra0_value_r = reg_r14_q;
         5'd15: ra0_value_r = reg_r15_q;
@@ -285,10 +284,10 @@ always @ (posedge clk_i or negedge rstn_i)
         5'd5: rb0_value_r = reg_r5_q;
         5'd6: rb0_value_r = reg_r6_q;
 		/*Insert your code */
-        //5'd7: 
-        //5'd8: 
-        //5'd9:
-        //5'd10: 
+        5'd7: rb0_value_r = reg_r7_q;
+        5'd8: rb0_value_r = reg_r8_q;
+        5'd9: rb0_value_r = reg_r9_q;
+        5'd10: rb0_value_r = reg_r10_q;
 		/*******************/
         5'd11: rb0_value_r = reg_r11_q;
         5'd12: rb0_value_r = reg_r12_q;
@@ -323,7 +322,7 @@ always @ (posedge clk_i or negedge rstn_i)
     assign rb0_value_o = rb0_value_r;
 
 //-------------------------------------------------------------------------------------------------------
-//**** module description ends with ¡°endmodule¡±
+//**** module description ends with â€œendmoduleâ€
 //-------------------------------------------------------------------------------------------------------
 endmodule
 
